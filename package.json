@@ -1,0 +1,10 @@
+
+{
+  "name": "dict",
+  "version": "0.0.1",
+  "repo": "AjayMT/dict.c",
+  "src": ["src/dict.c", "src/dict.h"],
+  "description": "simple dictionary implementation",
+  "license": "MIT",
+  "keywords": ["utility", "dictionary", "hash", "table"]
+}
