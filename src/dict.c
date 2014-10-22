@@ -2,11 +2,13 @@
 // dict.c
 
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "dict.h"
 
 // Check whether two strings are equal
-static int dict_streq (char *a, char *b)
+static int streq (char *a, char *b)
 {
     while (*a == *b && (*a != '\0' || *b != '\0'))
         a++, b++;
@@ -16,71 +18,76 @@ static int dict_streq (char *a, char *b)
     return 0; // not equal
 }
 
-// One-line memcpy that detects the size of the source string
-static void dict_copy (char *dst, char *src)
+// memcpy that detects the size of the source
+static void copy (char *dst, char *src)
 {
-    for (char *a = dst, *b = src; (b - src) < sizeof(src); *a = *b, a++, b++);
+    char *a = dst;
+    char *b = src;
+    for (; (b - src) < sizeof(src); *a = *b, a++, b++);
 }
 
 // Create a new dictionary
-// npairs is the number of key-value pairs
-// each key-value pair is just an array of two strings
-dict dict_new (int npairs, ...)
+dict *dict_new ()
 {
-    va_list args;
-    va_start(args, npairs);
+    dict *d = malloc(sizeof(dict));
+    copy(d->key, "");
+    d->next = 0;
 
-    dict *p, *d;
-
-    for (int i = 0; i < npairs; i++) {
-        dict_pair pair = va_arg(args, dict_pair);
-
-        dict a;
-        dict_copy(a.key, pair[0]);
-        dict_copy(a.value, pair[1]);
-
-        if (p)
-            p->next = &a;
-        else
-            d = &a;
-
-        p = &a;
-    }
-
-    return *d;
+    return d;
 }
 
 // Get a value for a specific key
-void dict_get (dict d, char *dst, char *key)
+void dict_get (dict *d, void *dst, char *key)
 {
-    while (1) {
-        if (dict_streq(d.key, key)) {
-            dict_copy(dst, d.value);
-            break;
-        }
-
-        if (d.next) d = *d.next;
-        else break;
-    }
+    if (streq(d->key, key))
+        copy(dst, d->value);
+    else
+        if ((int)(d->next) != 0)
+            dict_get(d->next, dst, key);
 }
 
 // Set a value for a specific key
-void dict_set (dict *d, char *key, char *value)
+void dict_set (dict *d, char *key, void *value)
 {
-    while (1) {
-        if (dict_streq(d->key, key)) {
-            dict_copy(d->value, value);
-            break;
-        }
+    if (streq(d->key, key) || streq(d->key, "")) {
+        if (streq(d->key, ""))
+            copy(d->key, key);
 
-        if (d->next) d = d->next;
-        else {
-            dict a;
-            dict_copy(a.key, key);
-            dict_copy(a.value, value);
+        copy(d->value, value);
+    } else {
+        if ((int)(d->next) == 0)
+            d->next = dict_new();
 
-            d->next = &a;
-            break;
-        }
+        dict_set(d->next, key, value);
+    }
+}
+
+int dict_len (dict *d)
+{
+    int i;
+
+    for (i = 1; (int)(d->next) != 0; i++)
+        d = d->next;
+
+    return i;
+}
+
+void dict_keys (dict *d, char **keys)
+{
+    int len = dict_len(d);
+
+    for (int i = 0; i < len; i++) {
+        copy(keys[i], d->key);
+        d = d->next;
+    }
+}
+
+void dict_values (dict *d, char **values)
+{
+    int len = dict_len(d);
+
+    for (int i = 0; i < len; i++) {
+        copy(values[i], d->value);
+        d = d->next;
     }
 }

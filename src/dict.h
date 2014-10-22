@@ -11,13 +11,14 @@ typedef struct dict {
     struct dict *next;
 } dict;
 
-typedef char **dict_pair;
+static int streq (char *a, char *b);
+static void copy (char *dst, char *src);
 
-static int dict_streq (char *a, char *b);
-static void dict_copy (char *dst, char *src);
-
-dict dict_new (int npairs, ...);
-void dict_get (dict d, char *dst, char *key);
-void dict_set (dict *d, char *key, char *value);
+dict *dict_new ();
+void dict_get (dict *d, void *dst, char *key);
+void dict_set (dict *d, char *key, void *value);
+int dict_len (dict *d);
+void dict_keys (dict *d, char **keys);
+void dict_values (dict *d, char **values);
 
 #endif

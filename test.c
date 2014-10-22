@@ -7,32 +7,47 @@
 
 int main (int argc, char *argv[])
 {
-    int n = 12;
-    char *pair1[2] = { "hello", "world" };
-    char *pair2[2] = { "foo", &n };
-    dict d = dict_new(2, pair1, pair2);
+    printf("\n\nbegin tests\n");
 
-    printf("getting things...\n");
+    int n = 4;
+    dict *d = dict_new();
+    dict_set(d, "hello", "world");
+    dict_set(d, "foo", &n);
+
+    printf("\n  getting things...\n");
 
     char world[100];
     dict_get(d, world, "hello");
-    printf("getting 'hello': %s\n", world);
+    printf("    getting 'hello': %s\n", world);
 
     char bar[100];
     dict_get(d, bar, "foo");
-    printf("getting 'foo': %d\n", *((int *)bar));
+    printf("    getting 'foo': %d\n", *bar);
 
-    printf("\nsetting things...\n");
+    printf("\n  setting things...\n");
 
-    dict_set(&d, "hello", "people");
+    dict_set(d, "hello", "people");
     char people[100];
     dict_get(d, people, "hello");
-    printf("setting 'hello': %s\n", people);
+    printf("    setting 'hello': %s\n", people);
 
-    dict_set(&d, "baz", "quux");
+    dict_set(d, "baz", "quux");
     char quux[100];
     dict_get(d, quux, "baz");
-    printf("setting 'baz': %s\n", quux);
+    printf("    setting 'baz': %s\n", quux);
+
+    printf("\n  dict length: %i\n", dict_len(d));
+
+    printf("\n  keys & values...\n");
+
+    char keys[dict_len(d)][100];
+    dict_keys(d, keys);
+    printf("    keys:");
+    /* for (int i = 0; i < dict_len(d); i++) */
+    /*     printf(" %s", keys[i]); */
+    printf("\n");
+
+    printf("\nend tests\n\n");
 
     return 0;
 }

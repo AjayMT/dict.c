@@ -8,7 +8,7 @@ TEST_OUT = tst
 all: $(IN) clean
 	$(CC) -o $(OUT) -c $(IN) -I $(INCLUDE)
 
-tst: $(TEST_IN) all clean
+tst: $(TEST_IN) clean
 	$(CC) $(TEST_IN) $(IN) -I $(INCLUDE) -o $(TEST_OUT)
 
 test: tst
