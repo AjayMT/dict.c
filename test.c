@@ -40,11 +40,17 @@ int main (int argc, char *argv[])
 
     printf("\n  keys & values...\n");
 
-    char keys[dict_len(d)][100];
-    dict_keys(d, keys);
+    char **keys = dict_keys(d);
     printf("    keys:");
-    /* for (int i = 0; i < dict_len(d); i++) */
-    /*     printf(" %s", keys[i]); */
+    for (int i = 0; i < dict_len(d); i++)
+        printf(" %s", keys[i]);
+    printf("\n");
+
+    char **values = dict_values(d);
+    printf("    values:");
+    for (int i = 0; i < dict_len(d); i++)
+        if (i == 1) printf(" %d", *values[i]);
+        else printf(" %s", values[i]);
     printf("\n");
 
     printf("\nend tests\n\n");

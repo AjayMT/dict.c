@@ -18,7 +18,7 @@ dict *dict_new ();
 void dict_get (dict *d, void *dst, char *key);
 void dict_set (dict *d, char *key, void *value);
 int dict_len (dict *d);
-void dict_keys (dict *d, char **keys);
-void dict_values (dict *d, char **values);
+char **dict_keys (dict *d);
+char **dict_values (dict *d);
 
 #endif

@@ -1,8 +1,6 @@
 
 // dict.c
 
-#include <stdarg.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "dict.h"
@@ -62,6 +60,7 @@ void dict_set (dict *d, char *key, void *value)
     }
 }
 
+// Get the number of key-value pairs in a dictionary
 int dict_len (dict *d)
 {
     int i;
@@ -72,22 +71,32 @@ int dict_len (dict *d)
     return i;
 }
 
-void dict_keys (dict *d, char **keys)
+// Get all the keys in a dictionary
+char **dict_keys (dict *d)
 {
     int len = dict_len(d);
+    char **keys = malloc(len * sizeof(char *));
 
     for (int i = 0; i < len; i++) {
+        keys[i] = malloc(_DICT_LIMIT);
         copy(keys[i], d->key);
         d = d->next;
     }
+
+    return keys;
 }
 
-void dict_values (dict *d, char **values)
+// Get all the values in a dictionary
+char **dict_values (dict *d)
 {
     int len = dict_len(d);
+    char **values = malloc(len * sizeof(char *));
 
     for (int i = 0; i < len; i++) {
+        values[i] = malloc(_DICT_LIMIT);
         copy(values[i], d->value);
         d = d->next;
     }
+
+    return values;
 }
