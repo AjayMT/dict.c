@@ -34,6 +34,25 @@ dict *dict_new ()
     return d;
 }
 
+// Free a dictionary
+void dict_free (dict *d)
+{
+    if ((int)(d->next) != 0)
+        dict_free(d->next);
+
+    free(d);
+}
+
+// Check if a dictionary has a key
+int dict_has (dict *d, char *key)
+{
+    if (streq(d->key, key)) return 1;
+    else if ((int)(d->next) != 0)
+        return dict_has(d->next, key);
+
+    return 0;
+}
+
 // Get a value for a specific key
 char *dict_get (dict *d, char *key)
 {
@@ -65,6 +84,15 @@ void dict_set (dict *d, char *key, void *value)
 
         dict_set(d->next, key, value);
     }
+}
+
+// Delete a key
+void dict_del (dict *d, char *key)
+{
+    if (streq(d->key, key) && (int)(d->next) != 0)
+        *d = *(d->next);
+    else if ((int)(d->next) != 0)
+        dict_del(d->next, key);
 }
 
 // Get the number of key-value pairs in a dictionary

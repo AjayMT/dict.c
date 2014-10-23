@@ -49,6 +49,27 @@ int main (int argc, char *argv[])
         else printf(" %s", values[i]);
     printf("\n");
 
+    printf("\n  checking for keys...\n");
+
+    printf("    dict has key 'hello': %i\n", dict_has(d, "hello"));
+
+    printf("    dict has key 'asdf': %i\n", dict_has(d, "asdf"));
+
+    printf("\n  deleting keys...\n");
+
+    char **oldkeys = dict_keys(d);
+    dict_del(d, "hello");
+    char **newkeys = dict_keys(d);
+    printf("    deleting key 'hello': %s %s\n", oldkeys[0], newkeys[0]);
+
+    oldkeys = dict_keys(d);
+    dict_del(d, "foo");
+    newkeys = dict_keys(d);
+    printf("    deleting key 'foo': %s %s\n", oldkeys[0], newkeys[0]);
+
+    printf("\n  freeing dict...\n");
+    dict_free(d);
+
     printf("\nend tests\n\n");
 
     return 0;
