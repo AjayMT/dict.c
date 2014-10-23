@@ -15,7 +15,7 @@ static int streq (char *a, char *b);
 static void copy (char *dst, char *src);
 
 dict *dict_new ();
-void dict_get (dict *d, void *dst, char *key);
+char *dict_get (dict *d, char *key);
 void dict_set (dict *d, char *key, void *value);
 int dict_len (dict *d);
 char **dict_keys (dict *d);

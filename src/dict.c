@@ -35,13 +35,18 @@ dict *dict_new ()
 }
 
 // Get a value for a specific key
-void dict_get (dict *d, void *dst, char *key)
+char *dict_get (dict *d, char *key)
 {
-    if (streq(d->key, key))
-        copy(dst, d->value);
-    else
+    if (streq(d->key, key)) {
+        char *val = malloc(sizeof(d->value));
+        copy(val, d->value);
+
+        return val;
+    } else
         if ((int)(d->next) != 0)
-            dict_get(d->next, dst, key);
+            return dict_get(d->next, key);
+
+    return 0;
 }
 
 // Set a value for a specific key
