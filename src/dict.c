@@ -8,7 +8,7 @@
 // Check whether two strings are equal
 static int streq (char *a, char *b)
 {
-    while (*a == *b && (*a != '\0' || *b != '\0'))
+    while (*a == *b && *a != '\0' && *b != '\0')
         a++, b++;
 
     if (*a == '\0' && *b == '\0') return 1; // equal
@@ -52,6 +52,8 @@ char *dict_get (dict *d, char *key)
 // Set a value for a specific key
 void dict_set (dict *d, char *key, void *value)
 {
+    if (streq(key, "")) return;
+
     if (streq(d->key, key) || streq(d->key, "")) {
         if (streq(d->key, ""))
             copy(d->key, key);
