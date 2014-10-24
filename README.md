@@ -19,12 +19,16 @@ int main (int argc, char *argv[])
 
     char *world = dict_get(my_dict, "hello");
     printf("hello: %s\n", world); // => "hello: world"
+    free(world);
 
     char *bar = dict_get(my_dict, "foo");
     printf("foo: %d\n", *bar); // => "foo: 12"
+    free(bar);
 
     dict_set(my_dict, "hello", "people"); // now 'hello' is mapped to 'people'
     n = 5; // we don't need to dict_set since 'foo' points to n
+
+    dict_free(my_dict);
 }
 ```
 
@@ -50,7 +54,7 @@ $ make
 Allocate and initialize a new dictionary. This function returns a pointer to the dictionary that was created.
 
 ### char *dict_get(dict *d, char *key)
-Get the value of `key` in `d` and return it.
+Get the value of `key` in `d` and return it. You should `free` the value that is returned.
 
 ### void dict_set(dict *d, char *key, char *value)
 Set `key` to `value` in `d`. This function will create a new key-value pair if necessary.
@@ -65,10 +69,10 @@ Return 1 if `key` is in `d`, 0 otherwise.
 Return the number of key-value pairs in `d`.
 
 ### char **keys(dict *d)
-Return an array containing all the keys in `d`.
+Return an array containing all the keys in `d`. You should `free` this.
 
 ### char **values(dict *d)
-Return an array containing all the values in `d`.
+Return an array containing all the values in `d`. You should `free` this.
 
 ### void dict_free(dict *d)
 Properly free `d`.
