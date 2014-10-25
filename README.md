@@ -8,6 +8,7 @@ Here's a usage example:
 
 ```c
 #include <stdio.h>
+#include <stdlib.h>
 #include "dict.h"
 
 int main (int argc, char *argv[])
