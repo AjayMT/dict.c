@@ -90,8 +90,9 @@ void dict_set (dict *d, char *key, char *value)
 void dict_del (dict *d, char *key)
 {
     if (streq(d->key, key) && (int)(d->next) != 0) {
-        *d = *(d->next);
-        free(d->next);
+	dict *n = d->next;
+        *d = *n;
+        free(n);
     } else if ((int)(d->next) != 0)
         dict_del(d->next, key);
 }
